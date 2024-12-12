@@ -1,0 +1,38 @@
+// Categories
+CREATE (c1:Category {name: 'Electronics'})
+CREATE (c2:Category {name: 'Books'})
+CREATE (c3:Category {name: 'Clothing'});
+
+// Products
+CREATE (p1:Product {id: '00000000-0000-0000-0000-000000000001', name: 'Smartphone', price: 699.99})
+CREATE (p2:Product {id: '00000000-0000-0000-0000-000000000002', name: 'Laptop', price: 1299.99})
+CREATE (p3:Product {id: '00000000-0000-0000-0000-000000000003', name: 'Fiction Book', price: 19.99})
+CREATE (p4:Product {id: '00000000-0000-0000-0000-000000000004', name: 'Jeans', price: 49.99})
+CREATE (p5:Product {id: '00000000-0000-0000-0000-000000000005', name: 'T-Shirt', price: 15.99});
+
+MATCH (c:Category {name: 'Electronics'}), (p:Product {id: '00000000-0000-0000-0000-000000000001'}) CREATE (p)-[:BELONGS_TO]->(c);
+MATCH (c:Category {name: 'Electronics'}), (p:Product {id: '00000000-0000-0000-0000-000000000002'}) CREATE (p)-[:BELONGS_TO]->(c);
+MATCH (c:Category {name: 'Books'}), (p:Product {id: '00000000-0000-0000-0000-000000000003'}) CREATE (p)-[:BELONGS_TO]->(c);
+MATCH (c:Category {name: 'Clothing'}), (p:Product {id: '00000000-0000-0000-0000-000000000004'}) CREATE (p)-[:BELONGS_TO]->(c);
+MATCH (c:Category {name: 'Clothing'}), (p:Product {id: '00000000-0000-0000-0000-000000000005'}) CREATE (p)-[:BELONGS_TO]->(c);
+
+// Users
+CREATE (u1:User {id: '00000000-0000-0000-0000-000000000001', name: 'Alicja', surname: 'Przykladowa', born: 2002})
+CREATE (u2:User {id: '00000000-0000-0000-0000-000000000002', name: 'Robert', surname: 'Testowy', born: 1970})
+CREATE (u3:User {id: '00000000-0000-0000-0000-000000000003', name: 'Karol', surname: 'Iksinski', born: 2005});
+
+// Purchases
+MATCH (u:User {id: '00000000-0000-0000-0000-000000000001'}), (p:Product {id: '00000000-0000-0000-0000-000000000001'}) CREATE (u)-[:BOUGHT]->(p);
+MATCH (u:User {id: '00000000-0000-0000-0000-000000000001'}), (p:Product {id: '00000000-0000-0000-0000-000000000003'}) CREATE (u)-[:BOUGHT]->(p);
+MATCH (u:User {id: '00000000-0000-0000-0000-000000000002'}), (p:Product {id: '00000000-0000-0000-0000-000000000001'}) CREATE (u)-[:BOUGHT]->(p);
+MATCH (u:User {id: '00000000-0000-0000-0000-000000000002'}), (p:Product {id: '00000000-0000-0000-0000-000000000004'}) CREATE (u)-[:BOUGHT]->(p);
+MATCH (u:User {id: '00000000-0000-0000-0000-000000000003'}), (p:Product {id: '00000000-0000-0000-0000-000000000002'}) CREATE (u)-[:BOUGHT]->(p);
+MATCH (u:User {id: '00000000-0000-0000-0000-000000000003'}), (p:Product {id: '00000000-0000-0000-0000-000000000005'}) CREATE (u)-[:BOUGHT]->(p);
+
+// Add Reviews
+MATCH (u:User {id: '00000000-0000-0000-0000-000000000001'}), (p:Product {id: '00000000-0000-0000-0000-000000000001'}) 
+CREATE (u)-[:REVIEWED {rating: 5, comment: 'Great product!'}]->(p);
+MATCH (u:User {id: '00000000-0000-0000-0000-000000000002'}), (p:Product {id: '00000000-0000-0000-0000-000000000004'}) 
+CREATE (u)-[:REVIEWED {rating: 4, comment: 'Very comfortable!'}]->(p);
+MATCH (u:User {id: '00000000-0000-0000-0000-000000000003'}), (p:Product {id: '00000000-0000-0000-0000-000000000002'}) 
+CREATE (u)-[:REVIEWED {rating: 5, comment: 'Worth every penny!'}]->(p);

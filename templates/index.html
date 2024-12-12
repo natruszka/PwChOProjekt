@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sytem rekomendacji</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .gradient-custom-plum {
+            /* fallback for old browsers */
+            background: #667eea;
+
+            /* Chrome 10-25, Safari 5.1-6 */
+            background: -webkit-linear-gradient(to right, rgba(102, 126, 234, 1), rgba(118, 75, 162, 1));
+
+            /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+            background: linear-gradient(to right, rgba(102, 126, 234, 1), rgba(118, 75, 162, 1))
+        }
+
+        .gradient-custom-gray {
+            /* fallback for old browsers */
+            background: #6a85b6;
+
+            /* Chrome 10-25, Safari 5.1-6 */
+            background: -webkit-linear-gradient(to right, rgba(106, 133, 182, 1), rgba(186, 200, 224, 1));
+
+            /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+            background: linear-gradient(to right, rgba(106, 133, 182, 1), rgba(186, 200, 224, 1))
+        }
+    </style>
+</head>
+
+<body class="bg-dark">
+    <div class="container">
+        <div class="bg-image" style="background-color: rgb(64, 64, 64);">
+            <div class="mask gradient-custom-plum">
+                <div class="row justify-content-center align-items-center h-100 text-white text-center"
+                    style="padding: 50px;">
+                    <p class="h1 mb-4">PoC systemu zarządzania produktami, kategoriami oraz użytkownikami w sklepie
+                        internetowym.
+                    </p>
+                    <p class="h4 mb-4">Przygotowany w ramach kursu<br />Przetwarzanie danych w chmurach obliczeniowych
+                        przez
+                        Aleksandrę Michalską.</p>
+                    <p class="h4">Wykorzystane technologie<br />Neo4J, Flask, HTML5, Bootstrap oraz JavaScript.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="bg-image" style="background-color: rgb(255, 255, 255, 0.1);">
+            <div class="row justify-content-center align-items-center h-100 text-white text-center"
+                style="padding: 50px;">
+                <div class="col-12 my-4">
+                    <p class="h2 mb-4">Najpopularniejsze produkty:</p>
+                    <table id="MostPopularProducts">
+
+                    </table>
+                </div>
+                <div class="col-12 my-4">
+                    <p class="h3 mb-3">Zarządzaj produktami:</p>
+                    <button class="btn btn-secondary btn-lg" onclick="fetchProducts()">Pokaż wszystkie produkty</button>
+                    <div id="productsManager" class="mt-3"></div>
+                    <div class="input-group mb-3">
+                        <input type="text" id="productName" class="form-control" placeholder="Nazwa">
+                        <input type="number" id="productPrice" class="form-control" placeholder="Cena" step="0.01">
+                        <input type="text" id="productCategory" class="form-control" placeholder="Kategoria">
+                        <button class="btn btn-secondary btn-lg" onclick="addProduct()">Dodaj produkt</button>
+                    </div>
+                    <div id="productStatus" class="mt-3"></div>
+                    <div id="productReviews" class="mt-3"></div>
+                    <div id="reviewStatus" class="mt-3"></div>
+                </div>
+                <div class="col-12 my-4 align-items-center">
+                    <p class="h3 mb-3">Zarządzaj kategoriami:</p>
+                    <button class="btn btn-secondary btn-lg" onclick="fetchCategories()">Pokaż wszystkie
+                        kategorie</button>
+                    <div id="categoryManager" class="mt-3"></div>
+                    <div class="input-group mb-3">
+                        <input type="text" id="newCategoryInput" class="form-control" placeholder="Kategoria">
+                        <button class="btn btn-secondary btn-lg" onclick="addCategory()">Dodaj kategorię</button>
+                    </div>
+                </div>
+                <div class="col-12 my-4">
+                    <p class="h3 mb-3">Zarządzaj użytkownikami:</p>
+                    <button class="btn btn-secondary btn-lg" onclick="fetchUsers()">Pokaż wszystkich
+                        użytkowników</button>
+                    <div id="userManager" class="mt-3"></div>
+                    <div class="input-group mb-3">
+                        <input type="text" id="userName" class="form-control" placeholder="Imię">
+                        <input type="text" id="userSurname" class="form-control" placeholder="Nazwisko">
+                        <input type="number" id="userBorn" class="form-control" placeholder="Rok urodzenia">
+                        <button class="btn btn-secondary btn-lg" onclick="addUser()">Dodaj użytkownika</button>
+                    </div>
+                    <div id="userStatus" class="mt-3"></div>
+                    <div id="userProducts" class="mt-3"></div>
+                </div>
+                <div class="col-12 my-4">
+                    <p class="h2">Zarekomenduj mi produkt!</p>
+                    <div class="input-group mb-3">
+                        <input type="text" id="recommendationId" class="form-control" placeholder="ID">
+                        <button class="btn btn-secondary btn-lg" onclick="fetchRecommendations()">Pokaż</button>
+                    </div>
+                </div>
+                <div id="recommendations" class="mt-3"></div>
+                <div class="col-12 my-4">
+                    <p class="h2">Kup przedmiot</p>
+                    <div class="input-group mb-3">
+                        <input type="text" id="buyerId" class="form-control" placeholder="ID użytkownika">
+                        <input type="text" id="productToBuyId" class="form-control" placeholder="ID produktu">
+                        <button class="btn btn-secondary btn-lg" onclick="buyProduct()">Kup</button>
+                    </div>
+                </div>
+                <div id="shoppingStatus" class="mt-3"></div>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
