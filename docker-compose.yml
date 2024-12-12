@@ -1,0 +1,8 @@
+version: "3.8"
+services:
+  app:
+    image: chmury2:latest
+    ports:
+      - "5000:50505" 
+    env_file:
+      - .env
