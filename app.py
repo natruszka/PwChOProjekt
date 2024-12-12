@@ -4,12 +4,11 @@ import os
 
 
 uri = os.getenv("NEO4J_URI")
-username = os.getenv("NEO4J_USER")
-password = os.getenv("NEO4J_PASS")
+username = os.getenv("NEO4J_USERNAME")
+password = os.getenv("NEO4J_PASSWORD")
 
 
 driver = GraphDatabase.driver(uri, auth=(username, password))
-
 
 app = Flask(__name__)
 
